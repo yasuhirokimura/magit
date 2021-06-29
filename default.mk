@@ -13,7 +13,9 @@ TOP := $(dir $(lastword $(MAKEFILE_LIST)))
 # installed either at "../<DEPENDENCY>", or when using package.el
 # at "ELPA_DIR/<DEPENDENCY>-<HIGHEST-VERSION>".
 
-PREFIX   ?= /usr/local
+LOAD_PATH +=	-L .
+LOAD_PATH +=	-L $(PREFIX)/share/emacs/site-lisp
+LOAD_PATH +=	-L $(PREFIX)/share/emacs/site-lisp/ghub
 sharedir ?= $(PREFIX)/share
 lispdir  ?= $(sharedir)/emacs/site-lisp/magit
 infodir  ?= $(sharedir)/info
@@ -29,11 +31,14 @@ SED      ?= sed
 EMACSBIN ?= emacs
 BATCH     = $(EMACSBIN) -Q --batch $(LOAD_PATH)
 
+PREFIX   := $(shell $(EMACSBIN) -Q --batch --eval \
+	"(princ (expand-file-name \"../../../..\" data-directory))")
+
 INSTALL_INFO     ?= $(shell command -v ginstall-info || printf install-info)
 MAKEINFO         ?= makeinfo
 MANUAL_HTML_ARGS ?= --css-ref /assets/page.css
 
-BUILD_MAGIT_LIBGIT ?= true
+BUILD_MAGIT_LIBGIT ?= false
 
 ## Files #############################################################
 
