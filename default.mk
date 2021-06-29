@@ -13,7 +13,10 @@ TOP := $(dir $(lastword $(MAKEFILE_LIST)))
 # installed either at "../<DEPENDENCY>", or when using package.el
 # at "ELPA_DIR/<DEPENDENCY>-<HIGHEST-VERSION>".
 
-PREFIX   ?= /usr/local
+LOAD_PATH +=	-L .
+LOAD_PATH +=	-L ../lisp
+LOAD_PATH +=	-L $(PREFIX)/share/emacs/site-lisp
+LOAD_PATH +=	-L $(PREFIX)/share/emacs/site-lisp/compat
 sharedir ?= $(PREFIX)/share
 lispdir  ?= $(sharedir)/emacs/site-lisp/magit
 infodir  ?= $(sharedir)/info
@@ -32,6 +35,9 @@ EMACS_ARGS ?= --eval "(progn \
 BATCH       = $(EMACS) -Q --batch $(EMACS_ARGS) $(LOAD_PATH)
 
 LISP_EXTRA_TARGETS ?= check-declare
+
+PREFIX   := $(shell $(EMACS) -Q --batch --eval \
+	"(princ (expand-file-name \"../../../..\" data-directory))")
 
 INSTALL_INFO     ?= $(shell command -v ginstall-info || printf install-info)
 MAKEINFO         ?= makeinfo
