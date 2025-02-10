@@ -34,7 +34,7 @@ help:
 	$(info Install)
 	$(info =======)
 	$(info )
-	$(info make install          -- Install elisp and documentation)
+	$(info make install          -- Install elisp and info manuals)
 	$(info make install-lisp     -- Install elisp)
 	$(info make install-docs     -- Install all documentation)
 	$(info make install-info     -- Install info manuals only)
@@ -102,7 +102,7 @@ epub:
 
 ## Install ###########################################################
 
-install: install-lisp install-docs
+install: install-lisp install-info
 
 install-lisp: lisp
 	@$(MAKE) -C lisp install
